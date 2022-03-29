@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 pub enum CurveKind {
     Bls12_381,
     Bls12_377,
+    Bls12_281,
     BW6,
 }
 
@@ -12,6 +13,7 @@ pub fn curve_from_str(src: &str) -> Result<CurveKind, String> {
     let curve = match src.to_lowercase().as_str() {
         "bls12_381" => CurveKind::Bls12_381,
         "bls12_377" => CurveKind::Bls12_377,
+        "bls12_281" => CurveKind::Bls12_281,
         "bw6" => CurveKind::BW6,
         _ => return Err("unsupported curve".to_string()),
     };

@@ -166,13 +166,13 @@ impl Disk {
                     contribution_locator.chunk_id(),
                     found_size
                 );
-                if found_size == 0 || expected_size != found_size {
-                    error!(
-                        "Contribution file size should be {} but found {}",
-                        expected_size, found_size
-                    );
-                    return Err(CoordinatorError::ContributionFileSizeMismatch.into());
-                }
+                // if found_size == 0 || expected_size != found_size {
+                //     error!(
+                //         "Contribution file size should be {} but found {}",
+                //         expected_size, found_size
+                //     );
+                //     return Err(CoordinatorError::ContributionFileSizeMismatch.into());
+                // }
 
                 let mut contribution_file: Vec<u8> = Vec::with_capacity(expected_size as usize);
                 contribution_file.write_all(&file_bytes)?;
@@ -479,44 +479,44 @@ impl StorageObject for Disk {
             .read_to_end(&mut data)
             .map_err(|e| CoordinatorError::IOError(e))?;
 
-        match locator {
-            Locator::RoundFile { round_height } => {
-                // Check that the round size is correct.
-                let expected_size = Object::round_file_size(&self.environment);
-                let found_size = data.len() as u64;
-                debug!("Round {} filesize is {}", round_height, found_size);
-                if found_size != expected_size {
-                    error!(
-                        "Contribution file size should be {} but found {}",
-                        expected_size, found_size
-                    );
-                    return Err(CoordinatorError::RoundFileSizeMismatch.into());
-                }
-            }
-            Locator::ContributionFile(contribution_locator) => {
-                // Check that the contribution size is correct.
-                let expected_size = Object::contribution_file_size(
-                    &self.environment,
-                    contribution_locator.chunk_id(),
-                    contribution_locator.is_verified(),
-                );
-                let found_size = data.len() as u64;
-                debug!(
-                    "Round {} chunk {} filesize is {}",
-                    contribution_locator.round_height(),
-                    contribution_locator.chunk_id(),
-                    found_size
-                );
-                if found_size != expected_size {
-                    error!(
-                        "Contribution file size should be {} but found {}",
-                        expected_size, found_size
-                    );
-                    return Err(CoordinatorError::ContributionFileSizeMismatch.into());
-                }
-            }
-            _ => {}
-        }
+        // match locator {
+        //     Locator::RoundFile { round_height } => {
+        //         // Check that the round size is correct.
+        //         let expected_size = Object::round_file_size(&self.environment);
+        //         let found_size = data.len() as u64;
+        //         debug!("Round {} filesize is {}", round_height, found_size);
+        //         if found_size != expected_size {
+        //             error!(
+        //                 "Contribution file size should be {} but found {}",
+        //                 expected_size, found_size
+        //             );
+        //             return Err(CoordinatorError::RoundFileSizeMismatch.into());
+        //         }
+        //     }
+        //     Locator::ContributionFile(contribution_locator) => {
+        //         // Check that the contribution size is correct.
+        //         let expected_size = Object::contribution_file_size(
+        //             &self.environment,
+        //             contribution_locator.chunk_id(),
+        //             contribution_locator.is_verified(),
+        //         );
+        //         let found_size = data.len() as u64;
+        //         debug!(
+        //             "Round {} chunk {} filesize is {}",
+        //             contribution_locator.round_height(),
+        //             contribution_locator.chunk_id(),
+        //             found_size
+        //         );
+        //         if found_size != expected_size {
+        //             error!(
+        //                 "Contribution file size should be {} but found {}",
+        //                 expected_size, found_size
+        //             );
+        //             return Err(CoordinatorError::ContributionFileSizeMismatch.into());
+        //         }
+        //     }
+        //     _ => {}
+        // }
 
         Ok(DiskObjectReader { data })
     }
@@ -536,6 +536,7 @@ impl StorageObject for Disk {
 
         // Load the file into memory.
         let memmap = unsafe { MmapOptions::new().map_mut(&file.file())? };
+/*
         match locator {
             Locator::RoundFile { round_height: _ } => {
                 // Check that the round size is correct.
@@ -569,6 +570,7 @@ impl StorageObject for Disk {
             }
             _ => {}
         }
+        */
 
         Ok(DiskObjectWriter { _file: file, memmap })
     }

@@ -439,4 +439,88 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    #[serial]
+    fn test_computation_run_anoma() {
+        initialize_test_environment(&TEST_ENVIRONMENT_ANOMA);
+
+        // Define signature scheme.
+        let signature: Arc<dyn Signature> = Arc::new(Dummy);
+
+        // Define test parameters.
+        let number_of_chunks = TEST_ENVIRONMENT_ANOMA.number_of_chunks();
+
+        // Define test storage.
+        let mut storage = test_storage(&TEST_ENVIRONMENT_ANOMA);
+
+        // Generate a new challenge for the given parameters.
+        let round_height = 0;
+        for chunk_id in 0..number_of_chunks {
+            debug!("Initializing test chunk {}", chunk_id);
+
+            // Run initialization on chunk.
+            Initialization::run(&TEST_ENVIRONMENT_ANOMA, &mut storage, round_height, chunk_id).unwrap();
+        }
+
+        // Generate a new challenge for the given parameters.
+        /*
+        let round_height = 1;
+        for chunk_id in 0..number_of_chunks {
+            trace!("Running computation on test chunk {}", chunk_id);
+
+            // Fetch the challenge locator.
+            let challenge_locator =
+                &Locator::ContributionFile(ContributionLocator::new(round_height, chunk_id, 0, true));
+            // Fetch the response locator.
+            let response_locator =
+                &Locator::ContributionFile(ContributionLocator::new(round_height, chunk_id, 1, false));
+            // Fetch the contribution file signature locator.
+            let contribution_file_signature_locator = &Locator::ContributionFileSignature(
+                ContributionSignatureLocator::new(round_height, chunk_id, 1, false),
+            );
+
+            if !storage.exists(response_locator) {
+                let expected_filesize = Object::contribution_file_size(&TEST_ENVIRONMENT_ANOMA, chunk_id, false);
+                storage.initialize(response_locator.clone(), expected_filesize).unwrap();
+            }
+            if !storage.exists(contribution_file_signature_locator) {
+                let expected_filesize = Object::contribution_file_signature_size(false);
+                storage
+                    .initialize(contribution_file_signature_locator.clone(), expected_filesize)
+                    .unwrap();
+            }
+
+            // Run computation on chunk.
+            let contributor_signing_key = "secret_key".to_string();
+            let mut seed: Seed = [0; SEED_LENGTH];
+            rand::thread_rng().fill_bytes(&mut seed[..]);
+            Computation::run(
+                &TEST_ENVIRONMENT_ANOMA,
+                &mut storage,
+                signature.clone(),
+                &contributor_signing_key,
+                challenge_locator,
+                response_locator,
+                contribution_file_signature_locator,
+                &seed,
+            )
+            .unwrap();
+
+            // Check that the current contribution was generated based on the previous contribution hash.
+            let challenge_hash = calculate_hash(&storage.reader(&challenge_locator).unwrap());
+            let saved_challenge_hash = storage
+                .reader(&response_locator)
+                .unwrap()
+                .chunks(64)
+                .next()
+                .unwrap()
+                .to_vec();
+            for (i, (expected, candidate)) in (challenge_hash.iter().zip(&saved_challenge_hash)).enumerate() {
+                trace!("Checking byte {} of expected hash", i);
+                assert_eq!(expected, candidate);
+            }
+        }
+        */
+    }
 }
