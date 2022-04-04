@@ -34,6 +34,9 @@ impl Circuit<Scalar> for TestCircuit {
 
 pub(crate) struct Initialization;
 
+use masp_phase2::MPCParameters;
+use masp_proofs::*;
+
 impl Initialization {
     ///
     /// Runs chunk initialization for a given environment, round height, and chunk ID.

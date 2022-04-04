@@ -508,18 +508,22 @@ mod tests {
             .unwrap();
 
             // Check that the current contribution was generated based on the previous contribution hash.
-            let challenge_hash = calculate_hash(&storage.reader(&challenge_locator).unwrap());
-            let saved_challenge_hash = storage
-                .reader(&response_locator)
-                .unwrap()
-                .chunks(64)
-                .next()
-                .unwrap()
-                .to_vec();
-            for (i, (expected, candidate)) in (challenge_hash.iter().zip(&saved_challenge_hash)).enumerate() {
-                trace!("Checking byte {} of expected hash", i);
-                assert_eq!(expected, candidate);
-            }
+            // let challenge_hash = calculate_hash(&storage.reader(&challenge_locator).unwrap());
+            // let saved_challenge_hash = storage
+            //     .reader(&response_locator)
+            //     .unwrap()
+            //     .chunks(64)
+            //     .next()
+            //     .unwrap()
+            //     .to_vec();
+
+            // trace!("challenge_hash: 0x{:02x}", challenge_hash.iter().format(""));
+            // trace!("saved_challenge_hash: 0x{:02x}", saved_challenge_hash.iter().format(""));
+
+            // for (i, (expected, candidate)) in (challenge_hash.iter().zip(&saved_challenge_hash)).enumerate() {
+            //     trace!("Checking byte {} of expected hash", i);
+            //     assert_eq!(expected, candidate);
+            // }
         }
         */
     }
