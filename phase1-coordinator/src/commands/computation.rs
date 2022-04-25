@@ -336,6 +336,55 @@ impl Computation {
 
         response_writer.flush().unwrap();
     }
+
+    #[inline]
+    fn contribute_test_masp(challenge_reader: &[u8], mut response_writer: &mut [u8]) {
+        let entropy = "entropy";
+        // Create an RNG based on a mixture of system randomness and user provided randomness
+        let mut rng = {
+            use rand::{Rng, SeedableRng};
+            use rand_chacha::ChaChaRng;
+            use std::convert::TryInto;
+
+            let h = {
+                let mut system_rng = rand::rngs::OsRng;
+                let mut h = Blake2b512::new();
+
+                // Gather 1024 bytes of entropy from the system
+                for _ in 0..1024 {
+                    let r: u8 = system_rng.gen();
+                    h.update(&[r]);
+                }
+
+                // Hash it all up to make a seed
+                h.update(&entropy.as_bytes());
+                h.finalize()
+            };
+
+            ChaChaRng::from_seed(h[0..32].try_into().unwrap())
+        };
+
+        let mut test_params =
+            MPCParameters::read(&challenge_reader[64..200_000_000], false).expect("unable to read MASP Test params");
+
+        trace!("Contributing to Masp Test...");
+        let progress_update_interval: u32 = 0;
+
+        let test_hash = test_params.contribute(&mut rng, &progress_update_interval);
+
+        let mut h = Blake2b512::new();
+        h.update(&test_hash);
+        let h = h.finalize();
+
+        debug!("Contribution hash: 0x{:02x}", h.iter().format(""));
+
+        trace!("Writing MASP Test parameters to file...");
+        test_params
+            .write(&mut response_writer)
+            .expect("failed to write updated MASP Spend parameters");
+
+        response_writer.flush().unwrap();
+    }
 }
 
 #[cfg(test)]
