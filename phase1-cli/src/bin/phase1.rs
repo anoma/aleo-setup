@@ -59,6 +59,29 @@ fn compute_contribution(pubkey: &str, round_height: u64, challenge: &[u8], chall
     Ok(get_file_as_byte_vec(filename.as_str())?)
 }
 
+fn get_file_as_byte_vec(filename: &String) -> Vec<u8> {
+    let mut f = File::open(&filename).expect("no file found");
+    let metadata = std::fs::metadata(&filename).expect("unable to read metadata");
+    // let mut buffer = vec![0; metadata.len() as usize];
+    let mut buffer = vec![0; 40_000];
+    debug!("metadata file length {}", metadata.len());
+    f.read(&mut buffer).expect("buffer overflow");
+
+    buffer
+}
+
+fn compute_contribution(challenge: &Vec<u8>, challenge_hash: &Vec<u8>) -> Vec<u8> {
+    let filename: String = String::from("response_challenge.params");
+    let mut response_writer = File::create(&filename).unwrap();
+
+    response_writer.write_all(challenge_hash.as_slice());
+
+    Computation::contribute_test_masp_cli(&challenge, &mut response_writer);
+    debug!("response writer {:?}", response_writer);
+
+    get_file_as_byte_vec(&filename)
+}
+
 async fn do_contribute(client: &Client, coordinator: &mut Url, sigkey: &str, pubkey: &str) -> Result<()> {
     let locked_locators = requests::post_lock_chunk(client, coordinator, pubkey).await?;
     let response_locator = locked_locators.next_contribution();
@@ -146,6 +169,13 @@ async fn update_coordinator(client: &Client, coordinator: &mut Url) {
     match requests::get_update(client, coordinator).await {
         Ok(()) => info!("Coordinator updated"),
         Err(e) => error!("{}", e),
+    }
+}
+
+async fn update_coordinator(client: &Client, coordinator: &mut Url) {
+    match requests::get_update(client, coordinator).await {
+        Ok(()) => println!("Coordinator updated!"),
+        Err(e) => eprintln!("{}", e),
     }
 }
 

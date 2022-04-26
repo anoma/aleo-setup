@@ -365,7 +365,7 @@ impl Computation {
         };
 
         let mut test_params =
-            MPCParameters::read(&challenge_reader[64..200_000_000], false).expect("unable to read MASP Test params");
+            MPCParameters::read(&challenge_reader[64..40_000], false).expect("unable to read MASP Test params");
 
         trace!("Contributing to Masp Test...");
         let progress_update_interval: u32 = 0;
@@ -379,9 +379,10 @@ impl Computation {
         debug!("Contribution hash: 0x{:02x}", h.iter().format(""));
 
         trace!("Writing MASP Test parameters to file...");
+        
         test_params
             .write(&mut response_writer)
-            .expect("failed to write updated MASP Spend parameters");
+            .expect("failed to write updated MASP Test parameters");
 
         response_writer.flush().unwrap();
     }

@@ -541,7 +541,7 @@ dependencies = [
 [[package]]
 name = "bls12_381"
 version = "0.6.0"
-source = "git+https://github.com/joebebel/bls12_381?branch=joe/fast_subgroup_check#39f1681c40cf84f06cedb65612de37c5cf8ce44f"
+source = "git+https://github.com/joebebel/bls12_381?branch=joe/fast_subgroup_check#44aa224a83dbb68cb9f747a95d5e65fbc40e61c2"
 dependencies = [
  "ff",
  "group",
@@ -1200,6 +1200,15 @@ name = "directories"
 version = "4.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f51c5d4ddabd36886dd3e1438cb358cdcb0d7c499cb99cb4ac2e38e18b5cb210"
+dependencies = [
+ "dirs-sys",
+]
+
+[[package]]
+name = "dirs"
+version = "4.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ca3aa72a6f96ea37bbc5aa912f6788242832f75369bdfdadcb0e38423f100059"
 dependencies = [
  "dirs-sys",
 ]
@@ -5062,7 +5071,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6470ab50f482bde894a037a57064480a246dbfdd5960bd65a44824693f08da5f"
 dependencies = [
  "byteorder",
- "crunchy 0.2.2",
+ "crunchy",
  "hex",
  "static_assertions",
 ]
@@ -5539,7 +5548,7 @@ dependencies = [
 [[package]]
 name = "zcash_encoding"
 version = "0.0.0"
-source = "git+https://github.com/zcash/librustzcash#43d052d9d8c53c32c8697e3686a24fd5ed72c0f3"
+source = "git+https://github.com/zcash/librustzcash?rev=43c18d0#43c18d000fcbe45363b2d53585d5102841eff99e"
 dependencies = [
  "byteorder",
  "nonempty",
@@ -5560,7 +5569,7 @@ dependencies = [
 [[package]]
 name = "zcash_note_encryption"
 version = "0.1.0"
-source = "git+https://github.com/zcash/librustzcash#43d052d9d8c53c32c8697e3686a24fd5ed72c0f3"
+source = "git+https://github.com/zcash/librustzcash?rev=43c18d0#43c18d000fcbe45363b2d53585d5102841eff99e"
 dependencies = [
  "chacha20",
  "chacha20poly1305",
@@ -5571,7 +5580,7 @@ dependencies = [
 [[package]]
 name = "zcash_primitives"
 version = "0.5.0"
-source = "git+https://github.com/zcash/librustzcash#43d052d9d8c53c32c8697e3686a24fd5ed72c0f3"
+source = "git+https://github.com/zcash/librustzcash?rev=43c18d0#43c18d000fcbe45363b2d53585d5102841eff99e"
 dependencies = [
  "aes",
  "bip0039",
@@ -5594,16 +5603,16 @@ dependencies = [
  "orchard",
  "rand 0.8.5",
  "rand_core 0.6.3",
- "sha2 0.9.8",
+ "sha2 0.9.9",
  "subtle",
  "zcash_encoding",
- "zcash_note_encryption 0.1.0 (git+https://github.com/zcash/librustzcash)",
+ "zcash_note_encryption 0.1.0 (git+https://github.com/zcash/librustzcash?rev=43c18d0)",
 ]
 
 [[package]]
 name = "zcash_proofs"
 version = "0.5.0"
-source = "git+https://github.com/zcash/librustzcash#43d052d9d8c53c32c8697e3686a24fd5ed72c0f3"
+source = "git+https://github.com/zcash/librustzcash?rev=43c18d0#43c18d000fcbe45363b2d53585d5102841eff99e"
 dependencies = [
  "bellman",
  "blake2b_simd",
