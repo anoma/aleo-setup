@@ -19,7 +19,7 @@ fn benchmark_initialization(c: &mut Criterion) {
     let proving_system = &[ProvingSystem::Groth16, ProvingSystem::Marlin];
 
     let mut group = c.benchmark_group("initialization");
-    
+
     for power in 10..14 {
         for compression in compressions {
             for proof_system in proving_system {

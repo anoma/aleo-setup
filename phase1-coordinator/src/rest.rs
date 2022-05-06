@@ -6,12 +6,15 @@ use crate::{
     ContributionFileSignature,
 };
 use rocket::{
-    error, get,
+    error,
+    get,
     http::{ContentType, Status},
     post,
     response::{Responder, Response},
     serde::{json::Json, Deserialize, Serialize},
-    Request, Shutdown, State,
+    Request,
+    Shutdown,
+    State,
 };
 
 use crate::{objects::LockedLocators, CoordinatorError, Participant};

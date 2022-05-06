@@ -1,4 +1,4 @@
-use crate::{objects::Participant, storage::Disk, authentication::KeyPair};
+use crate::{authentication::KeyPair, objects::Participant, storage::Disk};
 pub use phase1::{helpers::CurveKind, ContributionMode, ProvingSystem};
 use setup_utils::{CheckForCorrectness, UseCompression};
 

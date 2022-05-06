@@ -9,7 +9,8 @@ use phase1_cli::transform_pok_and_correctness;
 use phase1_coordinator::{
     environment::Environment,
     objects::{ContributionFileSignature, ContributionState},
-    phase1_chunked_parameters, Participant,
+    phase1_chunked_parameters,
+    Participant,
 };
 use setup_utils::calculate_hash;
 use snarkvm_curves::{bls12_377::Bls12_377, bw6_761::BW6_761};
@@ -515,9 +516,11 @@ mod tests {
 
         // Check that the challenge correctly stores the response hash.
         let challenge_with_stored_response_hash = [response_hash.to_vec(), dummy_challenge.to_vec()].concat();
-        assert!(verifier
-            .verify_response_hash(&challenge_with_stored_response_hash, &response_hash)
-            .is_ok());
+        assert!(
+            verifier
+                .verify_response_hash(&challenge_with_stored_response_hash, &response_hash)
+                .is_ok()
+        );
     }
 
     #[test]

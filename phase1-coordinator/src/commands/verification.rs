@@ -3,7 +3,13 @@ use crate::{
     commands::SigningKey,
     environment::Environment,
     storage::{
-        ContributionLocator, ContributionSignatureLocator, Disk, Locator, Object, StorageLocator, StorageObject,
+        ContributionLocator,
+        ContributionSignatureLocator,
+        Disk,
+        Locator,
+        Object,
+        StorageLocator,
+        StorageObject,
     },
     CoordinatorError,
 };
@@ -306,6 +312,7 @@ impl Verification {
 
         Ok(response_hash)
     }
+
     #[inline]
     fn verify_masp(challenge_reader: &[u8], response_reader: &[u8]) {
         let masp_spend =

@@ -5,7 +5,8 @@ use crate::{
         task::{initialize_tasks, Task},
     },
     storage::{Disk, Locator, Object},
-    CoordinatorError, TimeSource,
+    CoordinatorError,
+    TimeSource,
 };
 // use phase1::ProvingSystem;
 
@@ -3358,7 +3359,9 @@ mod tests {
         coordinator_state::*,
         environment::{Parameters, Testing},
         testing::prelude::*,
-        CoordinatorState, MockTimeSource, SystemTimeSource,
+        CoordinatorState,
+        MockTimeSource,
+        SystemTimeSource,
     };
 
     fn fetch_task_for_verifier(state: &CoordinatorState) -> Option<Task> {
